@@ -46,15 +46,15 @@ public class App
 //        ByteBuffer byteBuffer = ByteBuffer.wrap(buffer).order(ByteOrder.LITTLE_ENDIAN);
         UnsafeBuffer byteBuffer = new UnsafeBuffer(buffer);
 
-        byte countOfParts = (byte) digestInputStream.read();
-        System.out.println("Snapshot contains: " + countOfParts + " maps.");
-
-        for (byte i = 0; i < countOfParts; i++)
+//        byte countOfParts = (byte) digestInputStream.read();
+//        System.out.println("Snapshot contains: " + countOfParts + " maps.");
+//
+//        for (byte i = 0; i < countOfParts; i++)
         {
-            System.out.println("Map: " + i);
-            readBytes(digestInputStream, buffer, SIZE_OF_LONG);
-            final long mapSize = byteBuffer.getLong(0);
-            System.out.println("Map size: " + mapSize + " bytes");
+//            System.out.println("Map: " + i);
+//            readBytes(digestInputStream, buffer, SIZE_OF_LONG);
+//            final long mapSize = byteBuffer.getLong(0);
+//            System.out.println("Map size: " + mapSize + " bytes");
 
             long readBytes = 0;
             readBytes(digestInputStream, buffer, SIZE_OF_INT);
@@ -84,8 +84,8 @@ public class App
             System.out.println("Highest bucket ID: " + highestBucketId);
             System.out.println();
 
-            final long diff = mapSize - readBytes;
-            skipBytes(digestInputStream, diff);
+//            final long diff = mapSize - readBytes;
+//            skipBytes(digestInputStream, diff);
         }
 
     }

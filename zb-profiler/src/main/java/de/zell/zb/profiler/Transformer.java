@@ -18,6 +18,7 @@ public class Transformer implements ClassFileTransformer
     public Transformer(String filter)
     {
         classPool = ClassPool.getDefault();
+        System.out.println("Filter " + filter);
         this.filter = filter;
     }
 
@@ -26,10 +27,11 @@ public class Transformer implements ClassFileTransformer
     {
         try
         {
-            if (className != null &&
+            if (className != null && !className.contains("zell") &&
                 !className.contains("java") && !className.contains("sun") &&
                 (filter == null || className.startsWith(filter)))
             {
+                System.out.println("Transform: " + className);
                 final String correctClassName = className.replace('/', '.');
                 final CtClass cc = classPool.get(correctClassName);
                 if (!cc.isInterface() && !cc.isPrimitive() && !cc.isFrozen())
@@ -46,6 +48,12 @@ public class Transformer implements ClassFileTransformer
                             method.insertAfter("System.out.println(\"Executing: " +
                                                    method.getLongName() +
                                                    " takes \" + (System.nanoTime() - _startTime));");
+                            System.out.println("Method " + method.getLongName() + "was transformed!");
+                        }
+                        else
+                        {
+
+                            System.out.println("Method " + method.getLongName() + "was not transformed!");
                         }
                     }
 
@@ -53,6 +61,10 @@ public class Transformer implements ClassFileTransformer
                     final byte[] newClassfileBuffer = cc.toBytecode();
                     return newClassfileBuffer;
 
+                }
+                else
+                {
+                    System.out.println("Was not transformed! IS frozen: " + cc.isFrozen());
                 }
             }
         }
