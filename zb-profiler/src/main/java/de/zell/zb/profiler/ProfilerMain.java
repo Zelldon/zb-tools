@@ -24,6 +24,7 @@ public class ProfilerMain
 
     public static final String PATH = "/home/zell/git-repos/public/zb-tools/zb-profiler/target/zb-profiler-1.0-SNAPSHOT-jar-with-dependencies.jar";
 
+    public static String port = "";
 
     public static void main(String args[])
     {
@@ -52,11 +53,14 @@ public class ProfilerMain
 
 
                 final VirtualMachineDescriptor brokerDescriptor = brokers.get(0);
-
+                System.out.println(brokerDescriptor);
                 try
                 {
                     final VirtualMachine attach = VirtualMachine.attach(brokerDescriptor.id());
 
+                    port = attach.id();
+                    System.out.println(attach.id());
+                    System.out.println(attach);
                     System.out.println("Agent path: " + PATH);
                     // load profiler
                     attach.loadAgent(PATH);
