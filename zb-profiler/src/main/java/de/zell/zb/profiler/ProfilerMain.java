@@ -20,7 +20,6 @@ public class ProfilerMain
     }
 
 
-    private static final String DESCRIPTORS = "[%d]: %s";
 
     public static final String PATH = "/home/zell/git-repos/public/zb-tools/zb-profiler/target/zb-profiler-1.0-SNAPSHOT-jar-with-dependencies.jar";
 
@@ -44,7 +43,7 @@ public class ProfilerMain
 
             final List<VirtualMachineDescriptor> brokers = descriptors.stream()
                                                    .filter((descriptor) -> descriptor.displayName()
-                                                                                     .contains("Broker"))
+                                                                                     .contains("TestMain"))
                                                    .limit(1)
                                                    .collect(Collectors.toList());
 
@@ -116,18 +115,15 @@ public class ProfilerMain
 
     public static void agentmain(String agentArgs, Instrumentation instrumentation)
     {
-        System.out.println("Hooked into JVM! LETS GO!");
-
-
-
-        final Transformer transformer = new Transformer("io/zeebe");
+        final Transformer transformer = new Transformer("de/zell/zb/profiler/test");
 
         final List<Class> classes = new ArrayList<>();
         try
         {
-            classes.add(Class.forName("io.zeebe.util.state.StateMachine"));
-            classes.add(Class.forName("io.zeebe.util.state.StateMachineAgent"));
-            classes.add(Class.forName("io.zeebe.util.actor.ActorRunner"));
+////            classes.add(Class.forName("io.zeebe.util.state.StateMachine"));
+////            classes.add(Class.forName("io.zeebe.util.state.StateMachineAgent"));
+////            classes.add(Class.forName("io.zeebe.util.actor.ActorRunner"));
+            classes.add(Class.forName("de.zell.zb.profiler.test.TestMain$Foo"));
         }
         catch (ClassNotFoundException e)
         {
@@ -136,18 +132,8 @@ public class ProfilerMain
 
         instrumentation.addTransformer(transformer, true);
 
-//        final Class[] allLoadedClasses = instrumentation.getAllLoadedClasses();
         try
         {
-//            System.out.println("Loaded classes: " + allLoadedClasses.length);
-//            final List<Class> collect = Arrays.stream(allLoadedClasses)
-//                                              .filter((clazz) -> instrumentation.isModifiableClass(clazz))
-//                                              .collect(Collectors.toList());
-//
-//            final Class[] modifiableClasses = collect.toArray(new Class[collect.size()]);
-//            System.out.println("Modifiable classes: " + allLoadedClasses.length);
-
-//            instrumentation.retransformClasses(modifiableClasses);
             if (!classes.isEmpty())
             {
                 System.out.println("Retransform " + classes);
